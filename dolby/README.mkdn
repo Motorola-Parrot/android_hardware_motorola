@@ -1,28 +1,57 @@
-Motorola Dolby Atmos
-====================
+Sony Dolby
+==============
 
 Getting Started
 ---------------
-Clone the repository:
-
-Patches required to the device tree side :
-
-```bash
-https://github.com/sdm660-motorola/android_device_motorola_beckham/commit/0ddf5f7426aa62858381d97a472867da31b0c74a
-```
-
-```bash
-https://github.com/sdm660-motorola/device_motorola_msm8998-common/commit/8f107da3add9fa8f585e1a553543f858801cf8ee
-```
-
-To support the Dolby media codecs, include this line on your device tree :
+For dolby media codecs to work add this line in your media codecs config (should be in vendor partition) :-
 
 ```bash
 <Include href="media_codecs_dolby_audio.xml" />
 ```
 
-Inherit the dolby configs by :
+To build, add the dolby effects in your device's audio effects config then inherit the dolby config by adding this in your device's makefile :-
 
 ```bash
-$(call inherit-product, hardware/motorola/dolby/setup.mk)
+$(call inherit-product, hardware/motorola/dolby/dolby.mk)
 ```
+
+Now, moving hidl definitions in manifest to device trees is completely absurd so stop overriding manifest in your device trees an example for such would be :-
+
+Changing these in BoardConfig makefile of your device tree:-
+
+```bash
+DEVICE_FRAMEWORK_COMPATIBILITY_MATRIX_FILE :=
+```
+And
+
+```bash
+DEVICE_MANIFEST_FILE :=
+```
+
+To:-
+
+```bash
+DEVICE_FRAMEWORK_COMPATIBILITY_MATRIX_FILE +=
+```
+And
+
+```bash
+DEVICE_MANIFEST_FILE +=
+```
+
+The only change done above is changing := symbol to += so that manifest can't be overriden from device tree in BoardConfig makefile.
+
+At the end an example commit to properly implement it in your device tree could be :-
+
+[**1**] https://github.com/Motorola-Parrot/android_device_motorola_sm7435-common/commit/316a1b29928004d87e349dd889151aa9f8c09fa8
+
+[**2**] https://github.com/Motorola-Parrot/android_device_motorola_cuscoi/commit/d93f2966dcaaa7702f256afc9d503b6911700450
+
+# Credits:
+ * [**HELLBOY017**](https://github.com/HELLBOY017)
+ * [**adithya2306**](https://github.com/adithya2306)
+ * [**johnmart19**](https://github.com/johnmart19)
+ * [**userariii**](https://github.com/userariii)
+ * [**saku-bruh**](https://github.com/saku-bruh)
+ * [**ahnet-69 · he/him**](https://github.com/ahnet-69)
+ * [**Rakhshan7070**](https://github.com/Rakhshan7070)
