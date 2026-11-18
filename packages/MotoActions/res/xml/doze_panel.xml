@@ -23,6 +23,12 @@
         android:summary="@string/ambient_display_always_on_summary"
         android:persistent="false" />
 
+    <SwitchPreferenceCompat
+        android:key="always_on_wallpaper"
+        android:title="@string/ambient_display_always_on_wallpaper_title"
+        android:summary="@string/ambient_display_always_on_wallpaper_summary"
+        android:persistent="false" />
+
     <PreferenceCategory
         android:key="ambient_display_key"
         android:title="@string/ambient_display_title">

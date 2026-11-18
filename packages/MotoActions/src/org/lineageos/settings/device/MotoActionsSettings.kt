@@ -23,6 +23,7 @@ object MotoActionsSettings {
 
     const val DOZE_ENABLE = "doze_enable"
     const val ALWAYS_ON_DISPLAY = "always_on_display"
+    const val ALWAYS_ON_WALLPAPER = "always_on_wallpaper"
 
     fun isAlwaysOnEnabled(context: Context): Boolean =
         Settings.Secure.getIntForUser(
@@ -39,6 +40,26 @@ object MotoActionsSettings {
         Settings.Secure.putIntForUser(
             context.contentResolver,
             Settings.Secure.DOZE_ALWAYS_ON,
+            if (enable) 1 else 0,
+            UserHandle.USER_CURRENT,
+        )
+
+    fun isAlwaysOnWallpaperEnabled(context: Context): Boolean =
+        Settings.Secure.getIntForUser(
+            context.contentResolver,
+            Settings.Secure.DOZE_ALWAYS_ON_WALLPAPER_ENABLED,
+            0,
+            UserHandle.USER_CURRENT,
+        ) != 0
+
+    fun alwaysOnWallpaperAvailable(context: Context): Boolean =
+        alwaysOnDisplayAvailable(context) &&
+            context.resources.getBoolean(com.android.internal.R.bool.config_dozeSupportsAodWallpaper)
+
+    fun enableAlwaysOnWallpaper(context: Context, enable: Boolean): Boolean =
+        Settings.Secure.putIntForUser(
+            context.contentResolver,
+            Settings.Secure.DOZE_ALWAYS_ON_WALLPAPER_ENABLED,
             if (enable) 1 else 0,
             UserHandle.USER_CURRENT,
         )
